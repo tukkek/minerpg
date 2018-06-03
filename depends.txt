@@ -1,0 +1,2 @@
+mobs_monster
+mobs_npc
