@@ -6,6 +6,7 @@ local context={}
 local formid=0
 
 mobs:register_mob("minetest_rpg:merchant", {
+    nametag='Merchant',
     type="npc",
     passive=false,
     damage=3,

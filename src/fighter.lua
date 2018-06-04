@@ -4,6 +4,7 @@
 --Wizard quest giver
 
 mobs:register_mob("minetest_rpg:fighter", {
+    nametag='Fighter',
     type="npc",
     passive=false,
     damage=3,
@@ -87,7 +88,7 @@ mobs:register_mob("minetest_rpg:fighter", {
 function generatebounty()
     monsters={}
     for name,value in pairs(mobs.spawning_mobs) do
-        monster=minetest.registered_entities[name]
+        local monster=minetest.registered_entities[name]
         if monster.type=='monster' and next(monster.drops)~=nil then
             table.insert(monsters,name)
         end

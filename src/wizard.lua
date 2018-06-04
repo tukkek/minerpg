@@ -1,6 +1,7 @@
 --Wizard quest giver
 
 mobs:register_mob("minetest_rpg:wizard", {
+    nametag='Wizard',
     type="npc",
     passive=false,
     damage=3,

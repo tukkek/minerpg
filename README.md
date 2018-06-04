@@ -17,6 +17,12 @@ It's important to note though that, as of this first release, there isn't any th
 
 To avoid this, the best you can do at this point is have new groups of players find different hubs to operate on instead of trying to compete with more powerful players in the same hub. Another option, if you want to run a RPG-centric server, is to restart the world (or player's inventories) from scratch every week, couple weeks, month, etc.
 
+## Configuration
+
+You can set these options on your `minetest.conf` file:
+
+* `minetest_rpg_hubspawn` (number): luck-based chance of generating a hub with each world-chunk generation.
+
 ## Dependencies
 
 These mods are required for minetest_rpg to work. They will automatically be loaded in the correct order after you install them:
