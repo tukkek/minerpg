@@ -57,7 +57,7 @@ mobs:register_mob("minetest_rpg:fighter", {
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline
-            self.reward=7-deadline+randomize(4)
+            self.reward=7-deadline+randomize(4)+math.floor(price(self.questname)/10)
             if self.reward<1 then
                 self.reward=1
             end
@@ -75,11 +75,11 @@ mobs:register_mob("minetest_rpg:fighter", {
         local timeleft=self.deadline-today
         local description=minetest.registered_entities[self.monster].nametag
         minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:fighterquest",
-                "size[10,5]"..
-                "label[0,0;Can you kill bring me one "..self.quest.description.."?]"..
+                "size[10,4]"..
+                "label[0,0;Can you bring me one "..self.quest.description.."?]"..
                 "label[0,1;I'll pay you "..self.reward.." gold.]"..
                 "label[0,2;You have "..timeleft.." days remaining.]"..
-                "button_exit[0,3;2,3;exit;OK]")
+                "button_exit[0,3;2,1;exit;OK]")
     end,
 })
 

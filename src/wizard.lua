@@ -49,11 +49,11 @@ mobs:register_mob("minetest_rpg:wizard", {
             self.quest=nil
         end
         if self.quest==nil then
-            self.questname=generatequest()
+            self.questname=choose(listitemnames())
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline
-            self.reward=7-deadline+randomize(4)
+            self.reward=7-deadline+randomize(4)+math.floor(price(self.questname)/10)
             if self.reward<1 then
                 self.reward=1
             end
@@ -71,26 +71,13 @@ mobs:register_mob("minetest_rpg:wizard", {
         local timeleft=self.deadline-today
         local description=self.quest.description
         minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquest",
-                "size[10,5]"..
+                "size[10,4]"..
                 "label[0,0;Can you find one "..description.. " for me?]"..
                 "label[0,1;I'll pay you "..self.reward.." gold.]"..
                 "label[0,2;You have "..timeleft.." days remaining.]"..
-                "button_exit[0,3;2,3;exit;OK]")
+                "button_exit[0,3;2,1;exit;OK]")
     end,
 })
-
--- returns the itemstring name of the quest item
-function generatequest()
-    local items={}
-    for name,val in pairs(minetest.registered_items) do
-      table.insert(items,name)
-    end
-    local choice=nil
-    while choice==nil or minetest.registered_items[choice].description:gsub("%s+","")=='' do
-        choice=choose(items)
-    end
-    return choice
-end
 
 -- returns true if quest is completed (also removes item from inventory)
 function checkcompleted(inventory,itemname)

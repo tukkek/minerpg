@@ -26,3 +26,13 @@ end
 function choose(choices)
     return choices[math.random(#choices)]
 end
+
+function listitemnames()
+    local items={}
+    for name,val in pairs(minetest.registered_items) do
+        if name:gsub("%s+","")~='' then
+            table.insert(items,name)
+        end
+    end
+    return items
+end
