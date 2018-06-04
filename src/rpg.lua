@@ -69,8 +69,6 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
     if SPAWNHUBCHANCE~=nil then
         chance=SPAWNHUBCHANCE
     end
-    print(SPAWNHUBCHANCE)
-    print(chance)
     chance=chance-roll(1,100)
     while chance>0 do
         chance=chance-roll(1,100)

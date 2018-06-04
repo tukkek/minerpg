@@ -162,8 +162,6 @@ function pay(purchase,inventory)
             gold=gold+stack:get_count()
         end
     end
-    print(cost)
-    print(gold)
     if gold<cost then
         return false
     end
