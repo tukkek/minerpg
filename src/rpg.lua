@@ -1,11 +1,6 @@
-function createhub(position,player)
-    local name='mobs_npc:trader'
-    spawn(name)
-end
-
 -- Spawns an entity by its name.
 -- Randomizes location and returns nil if couldn't find a good stop
-function spawn(name)
+function spawn(name,position)
     position.x=position.x+randomize(6)
     position.z=position.z+randomize(6)
     local tries=0
@@ -26,4 +21,8 @@ end
 
 function randomize(maxp)
     return roll(1,maxp)-roll(1,maxp)
+end
+
+function choose(choices)
+    return choices[math.random(#choices)]
 end

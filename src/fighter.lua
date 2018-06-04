@@ -1,6 +1,9 @@
+--Fighter quest giver
+--Note that this file is largely a copy-paste of wizard.lua, sadly it's not trivial to implement these as hierarchical objects
+
 --Wizard quest giver
 
-mobs:register_mob("minetest_rpg:wizard", {
+mobs:register_mob("minetest_rpg:fighter", {
     type="npc",
     passive=false,
     damage=3,
@@ -15,7 +18,7 @@ mobs:register_mob("minetest_rpg:wizard", {
     visual="mesh",
     mesh="character.b3d",
     drawtype="front",
-    textures={{"mobs_npc2.png"},},
+    textures={{"mobs_trader.png"},},
     child_texture={{"mobs_npc_baby.png"},},
     makes_footstep_sound=true,
     sounds={},
@@ -43,13 +46,14 @@ mobs:register_mob("minetest_rpg:wizard", {
         punch_start=200,
         punch_end=219,
     },
-    on_rightclick=function(self, clicker)
+    on_rightclick=function(self,clicker)
         local today=minetest.get_day_count()
         if self.quest~=nil and today>self.deadline then
             self.quest=nil
         end
         if self.quest==nil then
-            self.questname=generatequest()
+            self.monster=generatebounty()
+            self.questname=identifyloot(self.monster)
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline
@@ -62,17 +66,17 @@ mobs:register_mob("minetest_rpg:wizard", {
         if checkcompleted(inventory,self.questname) then
             self.quest=nil
             inventory:add_item("main", ItemStack('default:gold_ingot '..self.reward))
-            minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquestdone",
+            minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:fighterquestdone",
                     "size[10,2]"..
                     "label[0,0;Thanks! Here's your "..self.reward.." gold!]"..
                     "button_exit[0,1;2,1;exit;OK]")
             return
         end
         local timeleft=self.deadline-today
-        local description=self.quest.description
-        minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquest",
+        local description=minetest.registered_entities[self.monster].nametag
+        minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:fighterquest",
                 "size[10,5]"..
-                "label[0,0;Can you find one "..description.. " for me?]"..
+                "label[0,0;Can you kill bring me one "..self.quest.description.."?]"..
                 "label[0,1;I'll pay you "..self.reward.." gold.]"..
                 "label[0,2;You have "..timeleft.." days remaining.]"..
                 "button_exit[0,3;2,3;exit;OK]")
@@ -80,16 +84,20 @@ mobs:register_mob("minetest_rpg:wizard", {
 })
 
 -- returns the itemstring name of the quest item
-function generatequest()
-    local items={}
-    for name,val in pairs(minetest.registered_items) do
-      table.insert(items,name)
+function generatebounty()
+    monsters={}
+    for name,value in pairs(mobs.spawning_mobs) do
+        monster=minetest.registered_entities[name]
+        if monster.type=='monster' and next(monster.drops)~=nil then
+            table.insert(monsters,name)
+        end
     end
-    local choice=nil
-    while choice==nil or minetest.registered_items[choice].description:gsub("%s+","")=='' do
-        choice=choose(items)
-    end
-    return choice
+    return choose(monsters)
+end
+
+function identifyloot(monster)
+    monster=minetest.registered_entities[monster]
+    return choose(monster.drops).name
 end
 
 -- returns true if quest is completed (also removes item from inventory)
