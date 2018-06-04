@@ -1,3 +1,8 @@
+default
+lucky_block?
 mobs_monster
-load_me_first_example_1?
-modname_example2?
+mobs_animal?
+mobs_mc?
+dmobs?
+mobs_water?
+craftguide?

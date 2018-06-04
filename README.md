@@ -10,6 +10,10 @@ Once a quest is completed, these NPCs will reward the player with gold, which ca
 
 The main goal of minetest_rpg is to nudge Minetest ever so slightly into a more traditional gaming experience, vaguely similar to some famous RPG video-games (minus the plot elements). It doesn't try to force the gameplay though, leaving you free to do your own thing in-between or even while you try to complete quests. The ultimate goal is to give you more reasons to go out and explore the amazing procedurally-generated world around you and use all the tools at your disposal, while also rewarding you for doing that!
 
+## Difficulty
+
+Although not intended to be a "hardcore" mode, minetest_rpg is definitely more difficult than your typical survival server. When you die you also permanently lose 1 heart, on top of normal death setbacks.
+
 ## Multiplayer
 
 This mod tries to be multiplayer-friendly, creating a competitive and/or cooperative scenario where players can try to be the first one to finish a bountiful quest, or work together in order to fulfill them. It can also be played normally on singleplayer!
@@ -32,6 +36,10 @@ These mods are required for minetest_rpg to work. They will automatically be loa
 * mobs_monster https://github.com/tenplus1/mobs_monster
 
 Of course, the base Minetest game (or stand-alone server) also needs to be installed, which can be done through your package manager or for free via the official website at http://minetest.net/
+
+Optional dependencies which minetest_rpg benefits from:
+
+* craftguide https://github.com/minetest-mods/craftguide/
 
 ## Compatibility with other mods 
 

@@ -113,3 +113,19 @@ function attemptplacement(minp,maxp)
     minetest.after(1,spawnhub,position)
     return true
 end
+
+minetest.register_on_respawnplayer(function(player)
+    local newhp=player:get_hp()-2
+    if newhp<1 then
+        newhp=1
+    end
+    print('hp '..newhp)
+    player:set_properties({hp_max=newhp,})
+    return false --proceeds with normal respawn
+end)
+
+minetest.register_on_newplayer(function(player)
+    if minetest.registered_items['craftguide:book']~=nil then
+        minetest.get_inventory({type="player",name=player:get_player_name()}):add_item('main',ItemStack('craftguide:book'))
+    end
+end)
