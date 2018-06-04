@@ -14,9 +14,9 @@ mobs:register_mob("minetest_rpg:merchant", {
     attacks_monsters=true,
     owner_loyal=true,
     pathfinding=true,
-    hp_min=10,
+    hp_min=20,
     hp_max=20,
-    armor=100,
+    armor=50,
     collisionbox={-0.35,-1.0,-0.35, 0.35,0.8,0.35},
     visual="mesh",
     mesh="character.b3d",
@@ -37,8 +37,11 @@ mobs:register_mob("minetest_rpg:merchant", {
     owner="",
     order="follow",
     fear_height=3,
+    walk_chance=0,
+    group_attack=true,
+    fall_damage=false,
     animation={
-        speed_normal=0,
+        speed_normal=30,
         speed_run=30,
         stand_start=0,
         stand_end=79,
@@ -114,7 +117,7 @@ function priceunsafe(itemname,safe)
     if PRICES[itemname]~=nil then
         return PRICES[itemname]
     end
-    recipe=minetest.get_craft_recipe(itemname)
+    local recipe=minetest.get_craft_recipe(itemname)
     if recipe.items==nil then
         return 1
     end
