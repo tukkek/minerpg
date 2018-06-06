@@ -11,7 +11,7 @@ mobs:register_mob("minetest_rpg:wizard", {
     pathfinding=true,
     hp_min=20,
     hp_max=20,
-    armor=50,
+    armor=0,
     collisionbox={-0.35,-1.0,-0.35, 0.35,0.8,0.35},
     visual="mesh",
     mesh="character.b3d",
@@ -24,7 +24,7 @@ mobs:register_mob("minetest_rpg:wizard", {
     run_velocity=3,
     jump=true,
     drops={},
-    water_damage=0,
+    water_damage=5,
     lava_damage=2,
     light_damage=0,
     follow={},
@@ -53,7 +53,7 @@ mobs:register_mob("minetest_rpg:wizard", {
             self.quest=nil
         end
         if self.quest==nil then
-            self.questname=choose(listitemnames())
+            self.questname=choose(rpg_drops)
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline

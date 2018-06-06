@@ -14,7 +14,7 @@ mobs:register_mob("minetest_rpg:fighter", {
     pathfinding=true,
     hp_min=20,
     hp_max=20,
-    armor=33,
+    armor=0,
     collisionbox={-0.35,-1.0,-0.35, 0.35,0.8,0.35},
     visual="mesh",
     mesh="character.b3d",
@@ -27,7 +27,7 @@ mobs:register_mob("minetest_rpg:fighter", {
     run_velocity=3,
     jump=true,
     drops={},
-    water_damage=1
+    water_damage=5,
     lava_damage=2,
     light_damage=0,
     follow={},
@@ -56,8 +56,7 @@ mobs:register_mob("minetest_rpg:fighter", {
             self.quest=nil
         end
         if self.quest==nil then
-            self.monster=generatebounty()
-            self.questname=identifyloot(self.monster)
+            self.questname=choose(rpg_monster_drops[choose(rpg_monsters_with_drops)])
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline
@@ -77,7 +76,6 @@ mobs:register_mob("minetest_rpg:fighter", {
             return
         end
         local timeleft=self.deadline-today
-        local description=minetest.registered_entities[self.monster].nametag
         minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:fighterquest",
                 "size[10,4]"..
                 "label[0,0;Can you bring me one "..self.quest.description.."?]"..
@@ -86,23 +84,6 @@ mobs:register_mob("minetest_rpg:fighter", {
                 "button_exit[0,3;2,1;exit;OK]")
     end,
 })
-
--- returns the itemstring name of the quest item
-function generatebounty()
-    monsters={}
-    for name,value in pairs(mobs.spawning_mobs) do
-        local monster=minetest.registered_entities[name]
-        if monster.type=='monster' and next(monster.drops)~=nil then
-            table.insert(monsters,name)
-        end
-    end
-    return choose(monsters)
-end
-
-function identifyloot(monster)
-    monster=minetest.registered_entities[monster]
-    return choose(monster.drops).name
-end
 
 -- returns true if quest is completed (also removes item from inventory)
 function checkcompleted(inventory,itemname)

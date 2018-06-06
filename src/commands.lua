@@ -24,13 +24,4 @@ minetest.register_chatcommand("spawnhub", {func=function(name,param)
     return true,'ok'
 end})
 
--- use to check for any problems with your modlist price estimates (including recipe recursion)
-minetest.register_chatcommand("priceall", {func=function(name,param)
-    for _,name in pairs(listitemnames()) do
-        print('calculating '..name)
-        priceunsafe(name,nil)
-    end
-    return true,'ok'
-end})
-
 --from this point onwards, place commands for debugging (do not commit!)

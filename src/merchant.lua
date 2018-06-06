@@ -16,7 +16,7 @@ mobs:register_mob("minetest_rpg:merchant", {
     pathfinding=true,
     hp_min=20,
     hp_max=20,
-    armor=50,
+    armor=0,
     collisionbox={-0.35,-1.0,-0.35, 0.35,0.8,0.35},
     visual="mesh",
     mesh="character.b3d",
@@ -29,7 +29,7 @@ mobs:register_mob("minetest_rpg:merchant", {
     run_velocity=3,
     jump=true,
     drops={},
-    water_damage=0,
+    water_damage=5,
     lava_damage=2,
     light_damage=0,
     follow={},
@@ -71,7 +71,7 @@ function restock(stock,lastupdate,today)
         if #stock==9 then
             table.remove(stock,roll(1,#stock))
         else
-            table.insert(stock,choose(listitemnames()))
+            table.insert(stock,choose(rpg_tools))
         end
         lastupdate=lastupdate+1
     end

@@ -4,21 +4,23 @@
 local SPAWNHUBCHANCE=tonumber(minetest.setting_get("minetest_rpg_hubspawn"))
 
 function spawn(name,position)
-    local position={x=position.x,y=position.y,z=position.z,}
-    position.x=position.x+randomize(100)
-    position.y=position.y+randomize(10)
-    position.z=position.z+randomize(100)
-    local tries=1000
-    while minetest.get_node(position).name~='air' do
-        position.y=position.y+1
+    local maxheight=200
+    local tries=maxheight*2
+    local position={x=position.x+randomize(100),y=maxheight,z=position.z+randomize(100),}
+    local node=minetest.get_node(position)
+    local meta=minetest.registered_nodes[node.name]
+    while node.name=='air' or node.name=='ignore' or meta.liquidtype~='none' or meta.drawtype~='normal' do
         tries=tries-1
         if tries==0 then
-            return nil
+            return false
         end
+        position.y=position.y-1
+        node=minetest.get_node(position)
+        meta=minetest.registered_nodes[node.name]
     end
     position.y=position.y+1 --npcs are 2 blocks tall
     local metadata=ItemStack(name):get_metadata()
-    minetest.after(10,minetest.add_entity,position,name,metadata)
+    minetest.after(5,minetest.add_entity,position,name,metadata)
     return true
 end
 
@@ -34,19 +36,10 @@ function choose(choices)
     return choices[math.random(#choices)]
 end
 
-function listitemnames()
-    local items={}
-    for name,val in pairs(minetest.registered_items) do
-        if name:gsub("%s+","")~='' then
-            table.insert(items,name)
-        end
-    end
-    return items
-end
-
 function spawnhub(position)
     local population=5+randomize(4)
     local placed=0
+    local attempts=1000
     while placed<population do
         local citizen=roll(1,3)
         if citizen==1 then
@@ -58,6 +51,10 @@ function spawnhub(position)
         end
         if spawn(citizen,position) then
             placed=placed+1
+        elseif attempts<=0 then
+            return
+        else
+            attempts=attempts-1
         end
     end
 end
@@ -114,18 +111,40 @@ function attemptplacement(minp,maxp)
     return true
 end
 
+function giveitems(player)
+    give('default:sword_steel',1,player)
+    give('default:pick_steel',1,player)
+    give('default:apple',10,player)
+    give('craftguide:book',1,player)
+end
+
 minetest.register_on_respawnplayer(function(player)
+    giveitems(player)
     local newhp=player:get_hp()-2
     if newhp<1 then
         newhp=1
     end
-    print('hp '..newhp)
     player:set_properties({hp_max=newhp,})
     return false --proceeds with normal respawn
 end)
 
 minetest.register_on_newplayer(function(player)
-    if minetest.registered_items['craftguide:book']~=nil then
-        minetest.get_inventory({type="player",name=player:get_player_name()}):add_item('main',ItemStack('craftguide:book'))
-    end
+    giveitems(player)
+    minetest.show_formspec(player:get_player_name(), "minetest_rpg:intro",
+            "size[12,6]"..
+            "label[0,0;Welcome to MineRPG! Your first goal is to find some friendly NPCs. They'll help fight against monsters!]"..
+            "label[0,1;If you cannot find NPCs before your first nightfall, build a shelther or hide until daybreak.]"..
+            "label[0,2;Once you're safe, talk to the NPCs to see which quests they are offering and try to complete them.]"..
+            "label[0,3;Doing enough quests will allow you to acquire better equipment, stats and abilities!.]"..
+            "label[0,4;Every time you die, you will lose some permanent health. If you die too much, start a new world.]"..
+            "button_exit[0,4;2,4;exit;Got it!]")
 end)
+
+-- returns true if item give to player or false if item definition not found
+function give(itemname,quantity,player)
+    if minetest.registered_items[itemname]==nil then
+        return false
+    end
+    minetest.get_inventory({type="player",name=player:get_player_name()}):add_item('main',ItemStack(itemname..' '..quantity))
+    return true
+end
