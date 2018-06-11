@@ -1,8 +1,6 @@
 --Fighter quest giver
 --Note that this file is largely a copy-paste of wizard.lua, sadly it's not trivial to implement these as hierarchical objects
 
---Wizard quest giver
-
 mobs:register_mob("minetest_rpg:fighter", {
     nametag='Fighter',
     type="npc",

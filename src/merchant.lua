@@ -198,7 +198,7 @@ function handlebuy(player,formname,fields)
         end
     end
     local inventory=minetest.get_inventory({type="player",name=player:get_player_name()})
-    if purchase~=nil and pay(purchase,inventory) then
+    if purchase~=nil and pay(price(purchase),inventory) then
         local merchant=context[fields['formid']]
         for i,value in pairs(merchant.stock) do
             if value==purchase then
@@ -210,8 +210,7 @@ function handlebuy(player,formname,fields)
     end
 end
 
-function pay(purchase,inventory)
-    local cost=price(purchase)
+function pay(cost,inventory)
     local coins=0
     for _,stack in pairs(inventory:get_list("main")) do
         if stack:get_name()=='minetest_rpg:coin' then

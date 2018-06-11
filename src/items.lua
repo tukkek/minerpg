@@ -14,8 +14,8 @@ function add(name,index)
 end
 
 function makeunique(oldtable)
-    newtable={}
-    names={}
+    local newtable={}
+    local names={}
     for _,name in pairs(oldtable) do
         if names[name]==nil then
             names[name]=true

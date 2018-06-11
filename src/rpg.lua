@@ -1,6 +1,8 @@
 -- Spawns an entity by its name.
 -- Randomizes location and returns nil if couldn't find a good stop
 
+RPG_STORAGE=minetest.get_mod_storage()
+
 local SPAWNHUBCHANCE=tonumber(minetest.setting_get("minetest_rpg_hubspawn"))
 
 function spawn(name,position)
@@ -40,16 +42,20 @@ function spawnhub(position)
     local population=5+randomize(4)
     local placed=0
     local attempts=1000
+    local trainer=true
     while placed<population do
-        local citizen=roll(1,3)
+        local citizen=roll(1,4)
         if citizen==1 then
             citizen='minetest_rpg:fighter'
         elseif citizen==2 then
             citizen='minetest_rpg:wizard'
-        else
+        elseif citizen==3 then
             citizen='minetest_rpg:merchant'
+        elseif citizen==4 and trainer then
+            citizen='minetest_rpg:trainer'
+            trainer=false
         end
-        if spawn(citizen,position) then
+        if type(citizen)=='string' and spawn(citizen,position) then
             placed=placed+1
         elseif attempts<=0 then
             return
@@ -125,7 +131,15 @@ minetest.register_on_respawnplayer(function(player)
         newhp=1
     end
     player:set_properties({hp_max=newhp,})
+    RPG_STORAGE:set_float(player:get_player_name()..'_health_override',newhp)
     return false --proceeds with normal respawn
+end)
+
+minetest.register_on_joinplayer(function(player)
+    local hp=RPG_STORAGE:get_float(player:get_player_name()..'_health_override')
+    if hp~=0 then
+        player:set_properties({hp_max=hp,})
+    end
 end)
 
 minetest.register_on_newplayer(function(player)
