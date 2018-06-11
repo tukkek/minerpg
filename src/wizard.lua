@@ -65,10 +65,10 @@ mobs:register_mob("minetest_rpg:wizard", {
         local inventory=minetest.get_inventory({type="player",name=clicker:get_player_name()})
         if checkcompleted(inventory,self.questname) then
             self.quest=nil
-            inventory:add_item("main", ItemStack('default:gold_ingot '..self.reward))
+            inventory:add_item("main", ItemStack('minetest_rpg:coin '..self.reward))
             minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquestdone",
                     "size[10,2]"..
-                    "label[0,0;Thanks! Here's your "..self.reward.." gold!]"..
+                    "label[0,0;Thanks! Here's your "..self.reward.." coins!]"..
                     "button_exit[0,1;2,1;exit;OK]")
             return
         end
@@ -77,7 +77,7 @@ mobs:register_mob("minetest_rpg:wizard", {
         minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquest",
                 "size[10,4]"..
                 "label[0,0;Can you find one "..description.. " for me?]"..
-                "label[0,1;I'll pay you "..self.reward.." gold.]"..
+                "label[0,1;I'll pay you "..self.reward.." coins.]"..
                 "label[0,2;You have "..timeleft.." days remaining.]"..
                 "button_exit[0,3;2,1;exit;OK]")
     end,

@@ -1,4 +1,4 @@
--- The merchant sells any item from any mod in exchange for gold
+-- The merchant sells any item from any mod in exchange for coins
 
 local DIALOGNAME="minetest_rpg:merchant"
 
@@ -84,7 +84,7 @@ function showdialog(stock,playername)
         local item=minetest.registered_items[itemname]
         actions=actions.."button_exit[0,"..line..";2,1;"..itemname..";Buy]"
 
-        actions=actions.."label[2,"..line..";"..item.description.." for "..price(itemname).." gold.]"
+        actions=actions.."label[2,"..line..";"..item.description.." for "..price(itemname).." coins.]"
         line=line+1
     end
     minetest.show_formspec(playername, DIALOGNAME,
@@ -93,10 +93,9 @@ function showdialog(stock,playername)
         "button_exit[0,"..line..";2,1;exit;Bye!]")
 end
 
---safe price estimate (prevents recursion) and converted to 1-gold_ingot scale
+--safe price estimate (prevents recursion) in coins
 function price(itemname)
     local cost=priceunsafe(itemname,{})
-    cost=math.floor(cost/10)
     if cost<1 then
         return 1
     end
@@ -159,15 +158,15 @@ end)
 
 function pay(purchase,inventory)
     local cost=price(purchase)
-    local gold=0
+    local coins=0
     for _,stack in pairs(inventory:get_list("main")) do
-        if stack:get_name()=='default:gold_ingot' then
-            gold=gold+stack:get_count()
+        if stack:get_name()=='minetest_rpg:coin' then
+            coins=coins+stack:get_count()
         end
     end
-    if gold<cost then
+    if coins<cost then
         return false
     end
-    inventory:remove_item('main',ItemStack('default:gold_ingot '..cost))
+    inventory:remove_item('main',ItemStack('minetest_rpg:coin '..cost))
     return true
 end

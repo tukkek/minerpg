@@ -148,3 +148,9 @@ function give(itemname,quantity,player)
     minetest.get_inventory({type="player",name=player:get_player_name()}):add_item('main',ItemStack(itemname..' '..quantity))
     return true
 end
+
+minetest.register_craftitem("minetest_rpg:coin",{
+    description="Coin",
+    inventory_image="coins_g.png",
+    stack_max=100
+})
