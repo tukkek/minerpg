@@ -47,7 +47,7 @@ mobs:register_mob("minetest_rpg:wizard", {
         punch_start=200,
         punch_end=219,
     },
-    on_rightclick=function(self, clicker)
+    on_rightclick=function(self,clicker)
         local today=minetest.get_day_count()
         if self.quest~=nil and today>self.deadline then
             self.quest=nil
@@ -63,7 +63,7 @@ mobs:register_mob("minetest_rpg:wizard", {
             end
         end
         local inventory=minetest.get_inventory({type="player",name=clicker:get_player_name()})
-        if checkcompleted(inventory,self.questname) then
+        if checkcompleted(inventory,self.questname,clicker) then
             self.quest=nil
             inventory:add_item("main", ItemStack('minetest_rpg:coin '..self.reward))
             minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquestdone",
@@ -84,12 +84,12 @@ mobs:register_mob("minetest_rpg:wizard", {
 })
 
 -- returns true if quest is completed (also removes item from inventory)
-function checkcompleted(inventory,itemname)
-    for i,stack in pairs(inventory:get_list("main")) do
-        if stack:get_name()==itemname then
-            inventory:remove_item('main',stack)
-            return true
-        end
+function checkcompleted(inventory,itemname,player)
+    print(itemname)
+    local item=player:get_wielded_item()
+    if item==nil or item:get_name()~=itemname then
+        return false
     end
-    return false
+    inventory:remove_item('main',item)
+    return true
 end
