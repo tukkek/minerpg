@@ -151,13 +151,13 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
         return hp_change
     end
     if reason.type=='fall' then
-        local resistance=round(player:get_physics_override().jump-1)*3
+        local resistance=round(player:get_physics_override().jump-1)*5
         hp_change=hp_change+resistance
-        if hp_change>0 then
+        if hp_change>-1 then
             hp_change=0
         end
-    end
-    if reason.type=='punch' then
+        print(hp_change)
+    elseif reason.type=='punch' then
         local armor=RPG_STORAGE:get_float(player:get_player_name()..'_armor')
         hp_change=hp_change-hp_change*armor
     end
