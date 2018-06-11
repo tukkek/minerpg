@@ -134,7 +134,7 @@ minetest.register_on_newplayer(function(player)
             "size[12,6]"..
             "label[0,0;Welcome to MineRPG! Your first goal is to find some friendly NPCs. They'll help fight against monsters!]"..
             "label[0,1;If you cannot find NPCs before your first nightfall, build a shelther or hide until daybreak.]"..
-            "label[0,2;Once you're safe, talk to the NPCs to see which quests they are offering and try to complete them.]"..
+            "label[0,2;Once you're safe, right-click NPCs to see which quests they are offering and try to complete them.]"..
             "label[0,3;Doing enough quests will allow you to acquire better equipment, stats and abilities!.]"..
             "label[0,4;Every time you die, you will lose some permanent health. If you die too much, start a new world.]"..
             "button_exit[0,4;2,4;exit;Got it!]")
@@ -154,3 +154,8 @@ minetest.register_craftitem("minetest_rpg:coin",{
     inventory_image="coins_g.png",
     stack_max=100
 })
+
+function round(num,numDecimalPlaces)
+  local mult=10^(numDecimalPlaces or 0)
+  return math.floor(num*mult+0.5)/mult
+end

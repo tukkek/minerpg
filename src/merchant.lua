@@ -1,9 +1,12 @@
 -- The merchant sells any item from any mod in exchange for coins
 
-local DIALOGNAME="minetest_rpg:merchant"
+local DIALOGSELL="minetest_rpg:merchant_sell"
+local DIALOGBUY="minetest_rpg:merchant_buy"
+local MAXSTOCK=9
+local MINIMUMSELLPRICE=6
 
 local context={}
-local formid=0
+local formids=0
 
 mobs:register_mob("minetest_rpg:merchant", {
     nametag='Merchant',
@@ -60,15 +63,15 @@ mobs:register_mob("minetest_rpg:merchant", {
         end
         restock(self.stock,self.lastupdate,today)
         self.lastupdate=today
-        context[formid..'']=self
-        showdialog(self.stock,clicker:get_player_name(),formid)
-        formid=formid+1
+        context[formids..'']=self
+        showdialog(self.stock,clicker,formids)
+        formids=formids+1
     end,
 })
 
 function restock(stock,lastupdate,today)
     while lastupdate<today do
-        if #stock==9 then
+        if #stock==MAXSTOCK then
             table.remove(stock,roll(1,#stock))
         else
             table.insert(stock,choose(rpg_tools))
@@ -77,17 +80,46 @@ function restock(stock,lastupdate,today)
     end
 end
 
-function showdialog(stock,playername)
+function showdialog(stock,player,formid)
+    local selling=player:get_wielded_item()
+    if selling~=nil and selling:get_name()~='' then
+        local coins=price(selling:get_name())
+        if coins>=MINIMUMSELLPRICE then
+            sell(player,selling,coins,formid)
+            return
+        end
+    end
+    buy(stock,player,formid)
+end
+
+-- sell held item to the merchant
+function sell(player,item,coins,formid)
+    local amount=item:get_count()
+    coins=round(coins*amount/2)
+    local description=minetest.registered_items[item:get_name()].description
+    if amount>1 then
+        description=amount..' '..description
+    end
+    minetest.show_formspec(player:get_player_name(), DIALOGSELL,
+        "size[10,4]"..
+        "label[0,0;Do you want to sell your "..description.." to me for "..coins.." coins?]"..
+        "label[0,1;If you want to buy items, talk to me empty-handed.]"..
+        "field[0,0;0,0;formid;formid;"..formid.."]"..
+        "button_exit[0,2;2,1;sell;Sell]"..
+        "button_exit[0,3;2,1;exit;Don't sell]")
+end
+
+-- buy items from the merchant
+function buy(stock,player,formid)
     local actions=''
     local line=0
     for i,itemname in pairs(stock) do
         local item=minetest.registered_items[itemname]
         actions=actions.."button_exit[0,"..line..";2,1;"..itemname..";Buy]"
-
         actions=actions.."label[2,"..line..";"..item.description.." for "..price(itemname).." coins.]"
         line=line+1
     end
-    minetest.show_formspec(playername, DIALOGNAME,
+    minetest.show_formspec(player:get_player_name(), DIALOGBUY,
         "size[10,10]"..actions..
         "field[0,0;0,0;formid;formid;"..formid.."]"..
         "button_exit[0,"..line..";2,1;exit;Bye!]")
@@ -131,10 +163,33 @@ function priceunsafe(itemname,safe)
     return cost
 end
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-    if formname~=DIALOGNAME then
-        return false
+minetest.register_on_player_receive_fields(function(player,formname,fields)
+    if formname==DIALOGBUY then
+        handlebuy(player,formname,fields)
+        return true
+    elseif formname==DIALOGSELL then
+        handlesell(player,formname,fields)
+        return true
     end
+    return false
+end)
+
+function handlesell(player,formname,fields)
+    if fields['sell']==nil then
+        return
+    end
+    local selling=player:get_wielded_item()
+    local coins=price(selling:get_name())
+    if coins<MINIMUMSELLPRICE then
+        return
+    end
+    coins=round(coins*selling:get_count()/2)
+    local inventory=minetest.get_inventory({type="player",name=player:get_player_name()})
+    inventory:remove_item('main',selling)
+    inventory:add_item('main',ItemStack('minetest_rpg:coin '..coins))
+end
+
+function handlebuy(player,formname,fields)
     local purchase=nil
     for name,value in pairs(fields) do
         if name~='formid' and name~='exit' and name~='quit' then
@@ -153,8 +208,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         end
         inventory:add_item("main", ItemStack(purchase))
     end
-    return true --consumer event and stops propagation
-end)
+end
 
 function pay(purchase,inventory)
     local cost=price(purchase)
