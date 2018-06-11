@@ -57,7 +57,7 @@ mobs:register_mob("minetest_rpg:wizard", {
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline
-            self.reward=7-deadline+randomize(4)+math.floor(price(self.questname)/10)
+            self.reward=7-deadline+randomize(4)+math.floor(price(self.questname))
             if self.reward<1 then
                 self.reward=1
             end
@@ -85,11 +85,10 @@ mobs:register_mob("minetest_rpg:wizard", {
 
 -- returns true if quest is completed (also removes item from inventory)
 function checkcompleted(inventory,itemname,player)
-    print(itemname)
     local item=player:get_wielded_item()
     if item==nil or item:get_name()~=itemname then
         return false
     end
-    inventory:remove_item('main',item)
+    inventory:remove_item('main',ItemStack(itemname..' 1'))
     return true
 end

@@ -60,7 +60,7 @@ mobs:register_mob("minetest_rpg:fighter", {
             self.quest=minetest.registered_items[self.questname]
             local deadline=1+roll(1,6)
             self.deadline=today+deadline
-            self.reward=7-deadline+randomize(4)+math.floor(price(self.questname)/10)
+            self.reward=7-deadline+randomize(4)+math.floor(price(self.questname))
             if self.reward<1 then
                 self.reward=1
             end
