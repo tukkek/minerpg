@@ -1,1 +1,1 @@
-Provides mulitplayer-friendly RPG quests and advancement that uses content from any active mods. See the file "readme.md" in this directory for more information.
+Provides mulitplayer-friendly RPG quests and advancement that uses content from any active mods. See the file "README.md" in this directory for more information.
