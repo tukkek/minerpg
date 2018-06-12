@@ -3,7 +3,7 @@
 
 RPG_STORAGE=minetest.get_mod_storage()
 
-local SPAWNHUBCHANCE=tonumber(minetest.setting_get("minetest_rpg_hubspawn"))
+local SPAWNHUBCHANCE=tonumber(minetest.setting_get("minerpg_hubspawn"))
 
 function spawn(name,position)
     local maxheight=200
@@ -46,13 +46,13 @@ function spawnhub(position)
     while placed<population do
         local citizen=roll(1,4)
         if citizen==1 then
-            citizen='minetest_rpg:fighter'
+            citizen='minerpg:fighter'
         elseif citizen==2 then
-            citizen='minetest_rpg:wizard'
+            citizen='minerpg:wizard'
         elseif citizen==3 then
-            citizen='minetest_rpg:merchant'
+            citizen='minerpg:merchant'
         elseif citizen==4 and trainer then
-            citizen='minetest_rpg:trainer'
+            citizen='minerpg:trainer'
             trainer=false
         end
         if type(citizen)=='string' and spawn(citizen,position) then
@@ -144,7 +144,7 @@ end)
 
 minetest.register_on_newplayer(function(player)
     giveitems(player)
-    minetest.show_formspec(player:get_player_name(), "minetest_rpg:intro",
+    minetest.show_formspec(player:get_player_name(), "minerpg:intro",
             "size[12,6]"..
             "label[0,0;Welcome to MineRPG! Your first goal is to find some friendly NPCs. They'll help fight against monsters!]"..
             "label[0,1;If you cannot find NPCs before your first nightfall, build a shelther or hide until daybreak.]"..
@@ -163,7 +163,7 @@ function give(itemname,quantity,player)
     return true
 end
 
-minetest.register_craftitem("minetest_rpg:coin",{
+minetest.register_craftitem("minerpg:coin",{
     description="Coin",
     inventory_image="coins_g.png",
     stack_max=100

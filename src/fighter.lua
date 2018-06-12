@@ -1,7 +1,7 @@
 --Fighter quest giver
 --Note that this file is largely a copy-paste of wizard.lua, sadly it's not trivial to implement these as hierarchical objects
 
-mobs:register_mob("minetest_rpg:fighter", {
+mobs:register_mob("minerpg:fighter", {
     nametag='Fighter',
     type="npc",
     passive=false,
@@ -66,15 +66,15 @@ mobs:register_mob("minetest_rpg:fighter", {
         local inventory=minetest.get_inventory({type="player",name=clicker:get_player_name()})
         if checkcompleted(inventory,self.questname,clicker) then
             self.quest=nil
-            inventory:add_item("main", ItemStack('minetest_rpg:coin '..self.reward))
-            minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:fighterquestdone",
+            inventory:add_item("main", ItemStack('minerpg:coin '..self.reward))
+            minetest.show_formspec(clicker:get_player_name(), "minerpgg:fighterquestdone",
                     "size[10,2]"..
                     "label[0,0;Thanks! Here's your "..self.reward.." coins!]"..
                     "button_exit[0,1;2,1;exit;OK]")
             return
         end
         local timeleft=self.deadline-today
-        minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:fighterquest",
+        minetest.show_formspec(clicker:get_player_name(), "minerpg:fighterquest",
                 "size[10,4]"..
                 "label[0,0;Can you bring me one "..self.quest.description.."?]"..
                 "label[0,1;I'll pay you "..self.reward.." coins.]"..

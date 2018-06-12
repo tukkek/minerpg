@@ -1,6 +1,6 @@
 local DEBUG=true;
 
-path=minetest.get_modpath("minetest_rpg")
+path=minetest.get_modpath("minerpg")
 
 dofile(path..'/src/items.lua')
 dofile(path..'/src/rpg.lua')

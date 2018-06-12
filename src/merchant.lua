@@ -1,14 +1,14 @@
 -- The merchant sells any item from any mod in exchange for coins
 
-local DIALOGSELL="minetest_rpg:merchant_sell"
-local DIALOGBUY="minetest_rpg:merchant_buy"
+local DIALOGSELL="minerpg:merchant_sell"
+local DIALOGBUY="minerpg:merchant_buy"
 local MAXSTOCK=9
 local MINIMUMSELLPRICE=6
 
 local context={}
 local formids=0
 
-mobs:register_mob("minetest_rpg:merchant", {
+mobs:register_mob("minerpg:merchant", {
     nametag='Merchant',
     type="npc",
     passive=false,
@@ -186,7 +186,7 @@ function handlesell(player,formname,fields)
     coins=round(coins*selling:get_count()/2)
     local inventory=minetest.get_inventory({type="player",name=player:get_player_name()})
     inventory:remove_item('main',selling)
-    inventory:add_item('main',ItemStack('minetest_rpg:coin '..coins))
+    inventory:add_item('main',ItemStack('minerpg:coin '..coins))
 end
 
 function handlebuy(player,formname,fields)
@@ -213,13 +213,13 @@ end
 function pay(cost,inventory)
     local coins=0
     for _,stack in pairs(inventory:get_list("main")) do
-        if stack:get_name()=='minetest_rpg:coin' then
+        if stack:get_name()=='minerpg:coin' then
             coins=coins+stack:get_count()
         end
     end
     if coins<cost then
         return false
     end
-    inventory:remove_item('main',ItemStack('minetest_rpg:coin '..cost))
+    inventory:remove_item('main',ItemStack('minerpg:coin '..cost))
     return true
 end

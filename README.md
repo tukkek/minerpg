@@ -33,14 +33,14 @@ You can set these options on your `minetest.conf` file:
 
 ## Dependencies
 
-These mods are required for minetest_rpg to work. They will automatically be loaded in the correct order after you install and enable them:
+These mods are required for MineRPG to work. They will automatically be loaded in the correct order after you install and enable them:
 
 * mobs_redo https://github.com/tenplus1/mobs_redo
 * mobs_monster https://github.com/tenplus1/mobs_monster
 
 Of course, the base Minetest game (or stand-alone server) also needs to be installed, which can be done through your package manager or for free via the official website at http://minetest.net/
 
-Optional dependencies which minetest_rpg benefits from:
+Optional dependencies which MineRPG benefits from:
 
 * craftguide https://github.com/minetest-mods/craftguide/
 
@@ -52,6 +52,6 @@ This mod will lookup global item tables and global mob tables when generating qu
 
 The downside to that is that shop items or quests may end up being weird, especially if a quest-giver asks you to bring him an item that isn't generated or crafted normally during that game. This is minimized as much as possible but in these cases, you'll either have to wait until the quest expires and a new one is introduced, find a new hub with new quests, or just not use MineRPG with mods that may cause this to happen.
 
-Some degree of intelligence is put into evaluating item costs (particularly on shops) but obviously it's impossible to create a formula that is perfect and also supports every other mod (including ones that haven't even been created yet). However, it's easy to set an item price by editing the [prices.lua](https://github.com/tukkek/minetest_rpg/blob/master/src/prices.lua) file, if the default estimate isn't adequate (and it will also help inform future estimates for recipes that include any items listed there).
+Some degree of intelligence is put into evaluating item costs (particularly on shops) but obviously it's impossible to create a formula that is perfect and also supports every other mod (including ones that haven't even been created yet). However, it's easy to set an item price by editing the [prices.lua](https://github.com/tukkek/minerpg/blob/master/src/prices.lua) file, if the default estimate isn't adequate (and it will also help inform future estimates for recipes that include any items listed there).
 
-**IMPORTANT:** MineRPG can only lookup items from mods that have been loaded earlier than itself when the server starts. To make sure other mods are loaded earlier, you have to add new lines in the format `othermodname?` to [depends.txt](https://github.com/tukkek/minetest_rpg/blob/master/depends.txt). If you are a mod developer or user and want me to add your own (or favorite) mods to MineRPG's `depends.txt`, feel free to open up a GitHub issue, a pull request or send me an email and I'll be happy to do it.
+**IMPORTANT:** MineRPG can only lookup items from mods that have been loaded earlier than itself when the server starts. To make sure other mods are loaded earlier, you have to add new lines in the format `othermodname?` to [depends.txt](https://github.com/tukkek/minerpg/blob/master/depends.txt). If you are a mod developer or user and want me to add your own (or favorite) mods to MineRPG's `depends.txt`, feel free to open up a GitHub issue, a pull request or send me an email and I'll be happy to do it.

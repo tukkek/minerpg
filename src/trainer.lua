@@ -1,9 +1,9 @@
 -- trainer will improve player stats for gold
 
-local DIALOG='minetest_rpg:trainerdialog'
+local DIALOG='minerpg:trainerdialog'
 local MAXARMOR=.75
 
-mobs:register_mob("minetest_rpg:trainer", {
+mobs:register_mob("minerpg:trainer", {
     nametag='Trainer',
     type="npc",
     passive=false,

@@ -1,6 +1,6 @@
 --Wizard quest giver
 
-mobs:register_mob("minetest_rpg:wizard", {
+mobs:register_mob("minerpg:wizard", {
     nametag='Wizard',
     type="npc",
     passive=false,
@@ -65,8 +65,8 @@ mobs:register_mob("minetest_rpg:wizard", {
         local inventory=minetest.get_inventory({type="player",name=clicker:get_player_name()})
         if checkcompleted(inventory,self.questname,clicker) then
             self.quest=nil
-            inventory:add_item("main", ItemStack('minetest_rpg:coin '..self.reward))
-            minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquestdone",
+            inventory:add_item("main", ItemStack('minerpg:coin '..self.reward))
+            minetest.show_formspec(clicker:get_player_name(), "minerpg:wizardquestdone",
                     "size[10,2]"..
                     "label[0,0;Thanks! Here's your "..self.reward.." coins!]"..
                     "button_exit[0,1;2,1;exit;OK]")
@@ -74,7 +74,7 @@ mobs:register_mob("minetest_rpg:wizard", {
         end
         local timeleft=self.deadline-today
         local description=self.quest.description
-        minetest.show_formspec(clicker:get_player_name(), "minetest_rpg:wizardquest",
+        minetest.show_formspec(clicker:get_player_name(), "minerpg:wizardquest",
                 "size[10,4]"..
                 "label[0,0;Can you find one "..description.. " for me?]"..
                 "label[0,1;I'll pay you "..self.reward.." coins.]"..
