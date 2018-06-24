@@ -12,6 +12,7 @@ for _,name in pairs(COMMON) do
 end
 
 PRICES['default:gold']=10
+PRICES['default:gold_ingot']=10
 PRICES['default:diamond']=100
 PRICES['default:steel_ingot']=5
 PRICES['default:obsidian_shard']=5
@@ -23,3 +24,4 @@ PRICES['vessels:drinking_glass']=2
 PRICES['default:book']=2
 PRICES['default:book_written']=5
 PRICES['default:bronze_ingot']=2
+PRICES['moreores:silver_ingot']=5

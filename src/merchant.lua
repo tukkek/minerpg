@@ -3,7 +3,7 @@
 local DIALOGSELL="minerpg:merchant_sell"
 local DIALOGBUY="minerpg:merchant_buy"
 local MAXSTOCK=9
-local MINIMUMSELLPRICE=6
+local MINIMUMSELLPRICE=5
 
 local context={}
 local formids=0
@@ -95,7 +95,7 @@ end
 -- sell held item to the merchant
 function sell(player,item,coins,formid)
     local amount=item:get_count()
-    coins=round(coins*amount/2)
+    coins=math.floor(coins*amount/2)
     local description=minetest.registered_items[item:get_name()].description
     if amount>1 then
         description=amount..' '..description
