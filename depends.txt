@@ -27,3 +27,5 @@ vessels?
 walls?
 wool?
 xpanes?
+snowdrift?
+teleport_potion?
