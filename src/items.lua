@@ -52,7 +52,11 @@ end
 for name,val in pairs(minetest.registered_tools) do
     add(name,rpg_tools)
 end
-add('wool:white',rpg_tools)
+for _,extra in pairs({'wool:white','default:dirt','bubasasa'}) do
+    if minetest.registered_items[extra] then
+        add(extra,rpg_tools)
+    end
+end
 
 if PRINTALL then
     for _,name in pairs(rpg_drops) do
