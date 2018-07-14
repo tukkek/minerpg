@@ -52,6 +52,7 @@ end
 for name,val in pairs(minetest.registered_tools) do
     add(name,rpg_tools)
 end
+add('wool:white',rpg_tools)
 
 if PRINTALL then
     for _,name in pairs(rpg_drops) do
