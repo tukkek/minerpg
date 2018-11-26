@@ -18,13 +18,13 @@ minetest.register_chatcommand("spawnfighter",{privs=privs,func=function(name,par
 end})
 
 minetest.register_chatcommand("spawnmerchant",{privs=privs,func=function(name,param)
-    spawn('minerpgg:merchant',minetest.get_player_by_name(name):get_pos())
+    spawn('minerpg:merchant',minetest.get_player_by_name(name):get_pos())
     return true,'ok'
 end})
 
 minetest.register_chatcommand("spawnhub",{privs=privs,func=function(name,param)
-    spawnhub(minetest.get_player_by_name(name):get_pos())
-    return true,'ok'
+  spawnhub(minetest.get_player_by_name(name):get_pos())
+  return true,'ok'
 end})
 
 --from this point onwards, place commands for debugging (do not commit!)

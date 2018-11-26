@@ -6,24 +6,24 @@ RPG_STORAGE=minetest.get_mod_storage()
 local SPAWNHUBCHANCE=tonumber(minetest.setting_get("minerpg_hubspawn"))
 
 function spawn(name,position)
-    local maxheight=200
-    local tries=maxheight*2
-    local position={x=position.x+randomize(100),y=maxheight,z=position.z+randomize(100),}
-    local node=minetest.get_node(position)
-    local meta=minetest.registered_nodes[node.name]
-    while node.name=='air' or node.name=='ignore' or meta.liquidtype~='none' or meta.drawtype~='normal' do
-        tries=tries-1
-        if tries==0 then
-            return false
-        end
-        position.y=position.y-1
-        node=minetest.get_node(position)
-        meta=minetest.registered_nodes[node.name]
+  local maxheight=200
+  local tries=maxheight*2
+  local position={x=position.x+randomize(100),y=maxheight,z=position.z+randomize(100),}
+  local node=minetest.get_node(position)
+  local meta=minetest.registered_nodes[node.name]
+  while node.name=='air' or node.name=='ignore' or meta.liquidtype~='none' or meta.drawtype~='normal' do
+    tries=tries-1
+    if tries==0 then
+      return false
     end
-    position.y=position.y+1 --npcs are 2 blocks tall
-    local metadata=ItemStack(name):get_metadata()
-    minetest.after(5,minetest.add_entity,position,name,metadata)
-    return true
+    position.y=position.y-1
+    node=minetest.get_node(position)
+    meta=minetest.registered_nodes[node.name]
+  end
+  position.y=position.y --npcs are 2 blocks tall
+  --local metadata=ItemStack(name):get_metadata()
+  minetest.after(5,minetest.add_entity,position,name)
+  return true
 end
 
 function roll(minp,maxp)
@@ -43,8 +43,9 @@ function spawnhub(position)
     local placed=0
     local attempts=1000
     local trainer=true
+    local dispatcher=true
     while placed<population do
-        local citizen=roll(1,4)
+        local citizen=roll(1,5)
         if citizen==1 then
             citizen='minerpg:fighter'
         elseif citizen==2 then
@@ -54,6 +55,10 @@ function spawnhub(position)
         elseif citizen==4 and trainer then
             citizen='minerpg:trainer'
             trainer=false
+        elseif citizen==5 and dispatcher then
+            citizen='minerpg:dispatcher'
+            registerhub(position)
+            dispatcher=false
         end
         if type(citizen)=='string' and spawn(citizen,position) then
             placed=placed+1
@@ -63,6 +68,17 @@ function spawnhub(position)
             attempts=attempts-1
         end
     end
+end
+
+function registerhub(position)
+  local hubs=RPG_STORAGE:get('hubs')
+  if hubs==nil then 
+    hubs={} 
+  else
+    hubs=minetest.deserialize(hubs)
+  end
+  table.insert(hubs,position)
+  RPG_STORAGE:set_string('hubs',minetest.serialize(hubs))
 end
 
 --generates hubs during block generation

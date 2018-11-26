@@ -8,6 +8,7 @@ Mod for the free and open-source sandbox game [Minetest](http://minetest.net/) t
 * Wizard: rewards you for fetching certain types of natural or manufactured items.
 * Merchant: buys and sells items (stock changes slightly with each passing day).
 * Trainer: raises player's stats for gold.
+* Dispatcher: gives packages to players (to be delivered to a dispatcher in a particular region)
 
 Once a quest is completed, these NPCs will reward the player with gold, which can then be used to buy items or advance their stats. Each quest is also put on a time limit, expiring in anywhere from a couple of days to a week - giving players a chance to either try to complete them or wait until a new quest is generated instead, while they focus on other sandbox activities (or content from other mods).
 

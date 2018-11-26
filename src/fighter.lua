@@ -67,7 +67,7 @@ mobs:register_mob("minerpg:fighter", {
         if checkcompleted(inventory,self.questname,clicker) then
             self.quest=nil
             inventory:add_item("main", ItemStack('minerpg:coin '..self.reward))
-            minetest.show_formspec(clicker:get_player_name(), "minerpgg:fighterquestdone",
+            minetest.show_formspec(clicker:get_player_name(), "minerpg:fighterquestdone",
                     "size[10,2]"..
                     "label[0,0;Thanks! Here's your "..self.reward.." coins!]"..
                     "button_exit[0,1;2,1;exit;OK]")
