@@ -133,17 +133,17 @@ end
 
 function distance(a,b)
   local x=math.abs(a.x-b.x)
-  local y=math.abs(a.y-b.y)
-  if x>y then
+  local z=math.abs(a.z-b.z)
+  if x>z then
     return x
   else
-    return y
+    return z
   end
 end
 
 minetest.register_craftitem("minerpg:package", {
   description="A delivery package",
-  inventory_image="coins_g.png",
+  inventory_image="package.png",
   stack_max=1,
   on_use=function(stack,user,pointed_thing)
     local target=minetest.deserialize(stack:get_meta():get('target'))
@@ -159,16 +159,16 @@ function pointto(from,to) --TODO figure out correct cardinals
   local x=from.x-to.x
   local pointer='The receiving dispatcher is about '..(round(math.abs(x)/100)*100)..' steps to the '
   if x>0 then 
-    pointer=pointer..'north' 
+    pointer=pointer..'west' 
   else 
-    pointer=pointer..'south' 
+    pointer=pointer..'east' 
   end
-  local y=from.y-to.y
-  pointer=pointer..' and '..(round(math.abs(y)/100)*100)..' steps to the '
-  if y>0 then 
-    pointer=pointer..'east.' 
+  local z=from.z-to.z
+  pointer=pointer..' and '..(round(math.abs(z)/100)*100)..' steps to the '
+  if z>0 then 
+    pointer=pointer..'south.' 
   else 
-    pointer=pointer..'west.' 
+    pointer=pointer..'north.' 
   end
   return pointer
 end

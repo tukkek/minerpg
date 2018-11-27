@@ -20,8 +20,7 @@ function spawn(name,position)
     node=minetest.get_node(position)
     meta=minetest.registered_nodes[node.name]
   end
-  position.y=position.y --npcs are 2 blocks tall
-  --local metadata=ItemStack(name):get_metadata()
+  position.y=position.y-1 --npcs are 2 blocks tall
   minetest.after(5,minetest.add_entity,position,name)
   return true
 end
@@ -134,10 +133,10 @@ function attemptplacement(minp,maxp)
 end
 
 function giveitems(player)
-    give('default:sword_steel',1,player)
-    give('default:pick_steel',1,player)
-    give('default:apple',10,player)
-    give('craftguide:book',1,player)
+  give('default:sword_steel',1,player)
+  give('default:pick_steel',1,player)
+  give('default:apple',10,player)
+  give('craftguide:book',1,player)
 end
 
 minetest.register_on_respawnplayer(function(player)
