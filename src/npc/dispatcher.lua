@@ -155,9 +155,9 @@ minetest.register_craftitem("minerpg:package", {
   end,
 })
 
-function pointto(from,to) --TODO figure out correct cardinals
+function pointto(from,to)
   local x=from.x-to.x
-  local pointer='The receiving dispatcher is about '..(round(math.abs(x)/100)*100)..' steps to the '
+  local pointer='The destination is about '..(round(math.abs(x)/100)*100)..' steps to the '
   if x>0 then 
     pointer=pointer..'west' 
   else 

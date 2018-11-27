@@ -137,6 +137,7 @@ function giveitems(player)
   give('default:pick_steel',1,player)
   give('default:apple',10,player)
   give('craftguide:book',1,player)
+  give('minerpg:treasuremap',1,player)
 end
 
 minetest.register_on_respawnplayer(function(player)
