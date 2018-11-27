@@ -6,7 +6,7 @@ local MAXARMOR=.75
 mobs:register_mob("minerpg:trainer", {
     nametag='Trainer',
     type="npc",
-    passive=false,
+    passive=true,
     damage=3,
     attack_type="dogfight",
     attacks_monsters=true,

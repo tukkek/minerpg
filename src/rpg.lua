@@ -20,7 +20,7 @@ function spawn(name,position)
     node=minetest.get_node(position)
     meta=minetest.registered_nodes[node.name]
   end
-  position.y=position.y-1 --npcs are 2 blocks tall
+  position.y=position.y+1 --npcs are 2 blocks tall
   minetest.after(5,minetest.add_entity,position,name)
   return true
 end
@@ -83,7 +83,7 @@ end
 --generates hubs during block generation
 --mihgt generate no hubs or multiple per chunk
 minetest.register_on_generated(function(minp, maxp, blockseed)
-    local chance=50
+    local chance=25
     if SPAWNHUBCHANCE~=nil then
         chance=SPAWNHUBCHANCE
     end
@@ -158,15 +158,16 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_newplayer(function(player)
-    giveitems(player)
-    minetest.show_formspec(player:get_player_name(), "minerpg:intro",
-            "size[12,6]"..
-            "label[0,0;Welcome to MineRPG! Your first goal is to find some friendly NPCs. They'll help fight against monsters!]"..
-            "label[0,1;If you cannot find NPCs before your first nightfall, build a shelther or hide until daybreak.]"..
-            "label[0,2;Once you're safe, right-click NPCs to see which quests they are offering and try to complete them.]"..
-            "label[0,3;Doing enough quests will allow you to acquire better equipment, stats and abilities!.]"..
-            "label[0,4;Every time you die, you will lose some permanent health. If you die too much, start a new world.]"..
-            "button_exit[0,4;2,4;exit;Got it!]")
+  giveitems(player)
+  minetest.show_formspec(player:get_player_name(), "minerpg:intro",
+    "size[10,7]"..
+    "label[0,0;Welcome to MineRPG! First try to find friendly NPCs. They'll help you fight monsters!]"..
+    "label[0,1;If you can't find NPCs until nightfall, build a shelther or hide until daybreak.]"..
+    "label[0,2;Right-click NPCs to see which quests they are offering and complete them for gold.]"..
+    "label[0,3;To sell or deliver an item, make sure to have it on your hand while talking.]"..
+    "label[0,4;Doing enough quests will allow you to acquire better equipment, stats and abilities!.]"..
+    "label[0,5;When you die, you lose some permanent health. If you die too much, start a new world.]"..
+    "button_exit[0,6;10,1;exit;Got it!]")
 end)
 
 -- returns true if item give to player or false if item definition not found

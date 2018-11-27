@@ -11,7 +11,7 @@ local formids=0
 mobs:register_mob(NAME,{
   nametag='Dispatcher',
   type="npc",
-  passive=false,
+  passive=true,
   damage=1,
   attack_type="dogfight",
   attacks_monsters=true,

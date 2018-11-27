@@ -11,7 +11,7 @@ local formids=0
 mobs:register_mob("minerpg:merchant", {
     nametag='Merchant',
     type="npc",
-    passive=false,
+    passive=true,
     damage=3,
     attack_type="dogfight",
     attacks_monsters=true,

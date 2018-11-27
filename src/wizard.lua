@@ -3,7 +3,7 @@
 mobs:register_mob("minerpg:wizard", {
     nametag='Wizard',
     type="npc",
-    passive=false,
+    passive=true,
     damage=3,
     attack_type="dogfight",
     attacks_monsters=true,
