@@ -158,6 +158,13 @@ minetest.register_on_joinplayer(function(player)
     end
 end)
 
+function map.update_hud_flags(player) --overrides `map` mod
+    player:hud_set_flags({
+      minimap = true,
+      minimap_radar = true
+    })
+end
+
 minetest.register_on_newplayer(function(player)
   giveitems(player)
   minetest.show_formspec(player:get_player_name(), "minerpg:intro",

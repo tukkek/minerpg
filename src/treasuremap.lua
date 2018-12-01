@@ -1,8 +1,10 @@
 local WORLDSIZE=minetest.settings['mapgen_limit'] or 31000
 local DISTANCEMAX=10000
 local DISTANCEFIND=100
-    
-minetest.register_craftitem("minerpg:treasuremap",{
+local HUDS={}
+local NAME="minerpg:treasuremap"
+
+minetest.register_craftitem(NAME,{
   description="Treasure map",
   inventory_image="treasuremap.png",
   stack_max=1,
@@ -45,10 +47,10 @@ function generatemarks(position)
 end
 
 function listmarks(marks,user,position)
-  text="size[10,"..(#marks+2).."]"..
+  local text="size[10,"..(#marks+2).."]"..
     "label[0,0;There are several marks on the map:]"
   for i,mark in ipairs(marks) do
-    text=text.."label[0,"..(i)..";Mark "..(i)..": "..pointto(mark,position).."]"
+    text=text.."label[0,"..(i)..";Mark "..(i)..": "..pointto(position,mark).."]"
   end
   text=text.."button_exit[0,"..(#marks+1)..";2,1;exit;OK]"
   minetest.show_formspec(user:get_player_name(),'minerpg:treasuremaplist',text)
@@ -72,3 +74,35 @@ function findmark(marki,marks,user)
   table.remove(marks,marki)
   return marks
 end
+
+minetest.register_on_joinplayer(function(player)
+  local id=player:hud_add({
+    hud_elem_type ="text",
+    position={x=.5,y=0.02},
+    offset={x=0,y=0},
+    text="NW",
+    alignment={x=0,y=0},
+    scale={x=100,y=100},
+    number=0xffd700,
+  })
+  HUDS[player:get_player_name()]=id;
+end)
+
+function updatehuds()
+  for _,player in pairs(minetest.get_connected_players()) do
+    local name=player:get_player_name()
+    local hand=player:get_wielded_item()
+    local show=hand~=nil and hand:get_name()==NAME
+    local text=''
+    if  show then
+      local facing=player:get_look_dir()
+      local direction=''
+      local north=facing.z
+      if facing.z>=.4 then text='N' elseif facing.z<=-.4 then text='S' end
+      if facing.x>=.4 then text=text..'E' elseif facing.x<=-.4 then text=text..'W' end
+    end
+    player:hud_change(HUDS[name],"text",text)
+  end
+  minetest.after(2,updatehuds)
+end
+minetest.after(2,updatehuds)

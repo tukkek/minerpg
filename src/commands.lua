@@ -7,6 +7,11 @@ minetest.register_chatcommand("day",{privs=privs,func=function(name,param)
     return true,'ok'
 end})
 
+minetest.register_chatcommand("morning",{privs=privs,func=function(name,param)
+    minetest.set_timeofday(.3)
+    return true,'ok'
+end})
+
 minetest.register_chatcommand("spawnwizard",{privs=privs,func=function(name,param)
     spawn('minerpg:wizard',minetest.get_player_by_name(name):get_pos())
     return true,'ok'

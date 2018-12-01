@@ -4,6 +4,7 @@
 local DIALOGOFFER="minerpg:dispatcheroffer"
 local NAME="minerpg:dispatcher"
 local DISTANCEDELIVERY=200
+local ROUND=1
 
 local context={}
 local formids=0
@@ -92,7 +93,7 @@ function receivepackage(clicker)
   local payment=package:get_meta():get_int('payment')
   local inventory=minetest.get_inventory({type="player",name=clicker:get_player_name()})
   inventory:remove_item('main',package)
-  minetest.show_formspec(clicker:get_player_name(), "minerpg:dispatcherempty",
+  minetest.show_formspec(clicker:get_player_name(), "minerpg:dispatcherreceive",
     "size[10,2]"..
     "label[0,0;Thanks! Here's you "..payment.." coins!]"..
     "button_exit[0,1;2,1;exit;OK]")
@@ -101,9 +102,7 @@ function receivepackage(clicker)
 end
 
 minetest.register_on_player_receive_fields(function(player,formname,fields)
-  if formname==DIALOGBUY or fields['deliver']==nil then
-    return
-  end
+  if formname~=DIALOGOFFER then return end
   local id=fields['formid']
   local dispatcher=context[id]
   local today=minetest.get_day_count()
@@ -156,19 +155,19 @@ minetest.register_craftitem("minerpg:package", {
 })
 
 function pointto(from,to)
-  local x=from.x-to.x
-  local pointer='The destination is about '..(round(math.abs(x)/100)*100)..' steps to the '
-  if x>0 then 
-    pointer=pointer..'west' 
-  else 
-    pointer=pointer..'east' 
+  local distancex=to.x-from.x
+  local distancez=to.z-from.z
+  local distance=math.max(math.abs(distancex),math.abs(distancez))
+  distance=round(distance/ROUND)*ROUND
+  local pointer='The destination is about '..distance..' steps to the '
+  local showx=math.abs(distancex)>=ROUND
+  local showz=math.abs(distancez)>=ROUND
+  if showz or not showx then
+    if distancez>0 then  pointer=pointer..'north' else pointer=pointer..'south' end
   end
-  local z=from.z-to.z
-  pointer=pointer..' and '..(round(math.abs(z)/100)*100)..' steps to the '
-  if z>0 then 
-    pointer=pointer..'south.' 
-  else 
-    pointer=pointer..'north.' 
+  if showx then
+    if distancex>0 then pointer=pointer..'east'else pointer=pointer..'west'end
   end
-  return pointer
+  --pointer=pointer..round(distancex)..' north '..round(distancez)..' east' 
+  return pointer..'.'
 end
