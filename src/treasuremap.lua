@@ -80,7 +80,7 @@ minetest.register_on_joinplayer(function(player)
     hud_elem_type ="text",
     position={x=.5,y=0.02},
     offset={x=0,y=0},
-    text="NW",
+    text="",
     alignment={x=0,y=0},
     scale={x=100,y=100},
     number=0xffd700,

@@ -30,3 +30,4 @@ xpanes?
 snowdrift?
 teleport_potion?
 teleporter?
+treasurer?

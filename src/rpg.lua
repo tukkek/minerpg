@@ -4,6 +4,8 @@
 RPG_STORAGE=minetest.get_mod_storage()
 
 local SPAWNHUBCHANCE=tonumber(minetest.setting_get("minerpg_hubspawn"))
+local RESPAWNDISTANCE=200
+local POSITIONS={} --player name:{x,y,z}
 
 function spawn(name,position)
   local maxheight=200
@@ -81,7 +83,7 @@ function registerhub(position)
 end
 
 --generates hubs during block generation
---mihgt generate no hubs or multiple per chunk
+--might generate no hubs or multiple per chunk
 minetest.register_on_generated(function(minp, maxp, blockseed)
     local chance=25
     if SPAWNHUBCHANCE~=nil then
@@ -140,22 +142,48 @@ function giveitems(player)
   give('minerpg:treasuremap',1,player)
 end
 
-minetest.register_on_respawnplayer(function(player)
-    giveitems(player)
-    local newhp=player:get_hp()-2
-    if newhp<1 then
-        newhp=1
+local function updatepositions()
+  for _,player in pairs(minetest.get_connected_players()) do
+    print(player:get_hp())
+    if player:get_hp()>0 then
+      POSITIONS[player:get_player_name()]=player:get_pos()
     end
-    player:set_properties({hp_max=newhp,})
-    RPG_STORAGE:set_float(player:get_player_name()..'_health_override',newhp)
-    return false --proceeds with normal respawn
+  end
+  minetest.after(10,updatepositions)
+end
+minetest.after(10,updatepositions)
+
+local function placeplayer(player) --respawns next to other players or next to where you died
+  local players=minetest.get_connected_players()
+  local respawn=nil
+  while respawn==nil or respawn.y==nil  do
+    respawn=POSITIONS[choose(players):get_player_name()]
+    if respawn==nil then respawn={x=0,y=0,z=0} else respawn=table.copy(respawn) end
+    respawn.x=respawn.x+roll(-RESPAWNDISTANCE,RESPAWNDISTANCE)
+    respawn.z=respawn.z+roll(-RESPAWNDISTANCE,RESPAWNDISTANCE)
+    respawn.y=minetest.get_spawn_level(respawn.x, respawn.z)
+  end
+  player:set_pos(respawn)
+end
+
+minetest.register_on_respawnplayer(function(player)
+  giveitems(player)
+  local newhp=player:get_hp()-2
+  if newhp<1 then
+    newhp=1
+  end
+  player:set_properties({hp_max=newhp,})
+  RPG_STORAGE:set_float(player:get_player_name()..'_health_override',newhp)
+  placeplayer(player)
+  return true  --overrides position
 end)
 
 minetest.register_on_joinplayer(function(player)
-    local hp=RPG_STORAGE:get_float(player:get_player_name()..'_health_override')
-    if hp~=0 then
-        player:set_properties({hp_max=hp,})
-    end
+  local hp=RPG_STORAGE:get_float(player:get_player_name()..'_health_override')
+  if hp~=0 then
+    player:set_properties({hp_max=hp,})
+  end
+  if #minetest.get_connected_players()>1 then placeplayer(player) end
 end)
 
 function map.update_hud_flags(player) --overrides `map` mod
