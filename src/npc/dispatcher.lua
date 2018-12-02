@@ -4,7 +4,7 @@
 local DIALOGOFFER="minerpg:dispatcheroffer"
 local NAME="minerpg:dispatcher"
 local DISTANCEDELIVERY=200
-local ROUND=1
+local ROUND=100
 
 local context={}
 local formids=0
