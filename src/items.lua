@@ -26,15 +26,16 @@ function makeunique(oldtable)
 end
 
 for name,node in pairs(minetest.registered_nodes) do
-    if type(node.drop)=='string' then
-        add(node.drop,rpg_drops)
-    elseif type(node.drop)=='table' then
-        for _,drop in pairs(node.drop.items) do
-            for _,item in pairs(drop.items) do
-                add(item,rpg_drops)
-            end
-        end
+  if type(node.drop)=='string' then
+    add(node.drop,rpg_drops)
+  elseif type(node.drop)=='table' and type(node.drop.items)=='table' then
+    --TODO this could use more testing but apparently we have no mods that do is right now?
+    for _,drop in pairs(node.drop.items) do
+      for _,item in pairs(drop.items) do
+        add(item,rpg_drops)
+      end
     end
+  end
 end
 rpg_drops=makeunique(rpg_drops)
 
