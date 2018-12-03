@@ -1,5 +1,5 @@
-local TRIESPERCHUNK=10000
-local CHESTSPERCHUNK=1
+local CHESTSPERCHUNK=2
+local TRIESPERCHUNK=CHESTSPERCHUNK*100
 
 local function registertreasure(name,rarity)
   local preciousness=price(name)

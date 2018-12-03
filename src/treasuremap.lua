@@ -58,13 +58,15 @@ end
 
 function findmark(marki,marks,user)
   if roll(1,#marks)==1 then
+    local gold=0
+    for i=0,10 do gold=gold+roll(1,8) end
     minetest.show_formspec(user:get_player_name(),'minerpg:treasuremapfound',
       "size[10,3]"..
-      "label[0,0;The magic incantation on the map produces a chest full of gold!]"..
+      "label[0,0;The magic incantation on the map produces a chest with "..gold.." gold coins!]"..
       "label[0,1;There's another map on the chest. You pick it up...]"..
       "button_exit[0,2;2,1;exit;OK]")
     local inventory=minetest.get_inventory({type="player",name=user:get_player_name()})
-    inventory:add_item("main",ItemStack('minerpg:coin 50'))
+    inventory:add_item("main",ItemStack('minerpg:coin '..gold))
     return nil
   end
   minetest.show_formspec(user:get_player_name(),'minerpg:treasuremapfound',
@@ -92,7 +94,7 @@ function updatehuds()
   for _,player in pairs(minetest.get_connected_players()) do
     local name=player:get_player_name()
     local hand=player:get_wielded_item()
-    local show=hand~=nil and hand:get_name()==NAME
+    local show=hand~=nil and (hand:get_name()==NAME or hand:get_name()=='minerpg:package')
     local text=''
     if  show then
       local facing=player:get_look_dir()

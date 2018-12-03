@@ -156,7 +156,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
         if hp_change>-1 then
             hp_change=0
         end
-        print(hp_change)
+        --print(hp_change)
     elseif reason.type=='punch' then
         local armor=RPG_STORAGE:get_float(player:get_player_name()..'_armor')
         hp_change=hp_change-hp_change*armor

@@ -23,7 +23,6 @@ game_commands?
 give_initial_stuff?
 lucky_block?
 map?
-minerpg?
 MinetestAmbience?
 minetest_game?
 mobs_animal?

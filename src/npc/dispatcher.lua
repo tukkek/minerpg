@@ -70,8 +70,8 @@ mobs:register_mob(NAME,{
         "label[0,0;Do you want to deliver this package for me?]"..
         "label[0,1;"..pointto(clicker:get_pos(),self.target).."]"..
         "label[0,2;He will pay you "..payment.." coins on delivery.]"..
-        "button_exit[0,3;1,1;deliver;Yes]"..
-        "button_exit[1,3;1,1;exit;No]")
+        "button_exit[1,3;1,1;exit;No]"..
+        "button_exit[0,3;1,1;deliver;Yes]")
       context[formids..'']=self
       context[formids..'target']=self.target
       formids=formids+1
@@ -88,7 +88,7 @@ function receivepackage(clicker)
   local package=clicker:get_wielded_item()
   if package:get_name()~='minerpg:package' then return false end
   local target=minetest.deserialize(package:get_meta():get('target'))
-  print('distance '..distance(target,clicker:get_pos()))
+  --print('distance '..distance(target,clicker:get_pos()))
   if distance(target,clicker:get_pos())>DISTANCEDELIVERY then return false end
   local payment=package:get_meta():get_int('payment')
   local inventory=minetest.get_inventory({type="player",name=clicker:get_player_name()})

@@ -154,9 +154,7 @@ function priceunsafe(itemname,safe)
     end
     local cost=0
     for _,material in pairs(recipe.items) do
-        if safe==nil then
-            print(material)
-        end
+        --if safe==nil then print(material) end
         material=ItemStack(material)
         cost=cost+priceunsafe(material:get_name(),safe)*material:get_count()
     end

@@ -144,7 +144,7 @@ end
 
 local function updatepositions()
   for _,player in pairs(minetest.get_connected_players()) do
-    print(player:get_hp())
+    --print(player:get_hp())
     if player:get_hp()>0 then
       POSITIONS[player:get_player_name()]=player:get_pos()
     end
@@ -218,7 +218,7 @@ end
 minetest.register_craftitem("minerpg:coin",{
     description="Coin",
     inventory_image="coins_g.png",
-    stack_max=100
+    stack_max=500
 })
 
 function round(num,numDecimalPlaces)
