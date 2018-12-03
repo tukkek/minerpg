@@ -94,7 +94,7 @@ function updatehuds()
   for _,player in pairs(minetest.get_connected_players()) do
     local name=player:get_player_name()
     local hand=player:get_wielded_item()
-    local show=hand~=nil and (hand:get_name()==NAME or hand:get_name()=='minerpg:package')
+    local show=hand~=nil and hand:get_name()==NAME
     local text=''
     if  show then
       local facing=player:get_look_dir()

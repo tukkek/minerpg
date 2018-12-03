@@ -46,7 +46,7 @@ function spawnhub(position)
     local trainer=true
     local dispatcher=true
     while placed<population do
-        local citizen=roll(1,5)
+        local citizen=roll(1,4)
         if citizen==1 then
             citizen='minerpg:fighter'
         elseif citizen==2 then
@@ -56,10 +56,6 @@ function spawnhub(position)
         elseif citizen==4 and trainer then
             citizen='minerpg:trainer'
             trainer=false
-        elseif citizen==5 and dispatcher then
-            citizen='minerpg:dispatcher'
-            registerhub(position)
-            dispatcher=false
         end
         if type(citizen)=='string' and spawn(citizen,position) then
             placed=placed+1
