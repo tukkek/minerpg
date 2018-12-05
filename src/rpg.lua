@@ -44,7 +44,6 @@ function spawnhub(position)
     local placed=0
     local attempts=1000
     local trainer=true
-    local dispatcher=true
     while placed<population do
         local citizen=roll(1,4)
         if citizen==1 then
